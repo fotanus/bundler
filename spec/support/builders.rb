@@ -441,7 +441,7 @@ module Spec
         @name    = name
         @spec = Gem::Specification.new do |s|
           s.name    = name
-          s.version = version
+          s.version = version unless version == "noversion"
           s.summary = "This is just a fake gem for testing"
         end
         @files = {}

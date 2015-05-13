@@ -65,6 +65,16 @@ describe "bundle install from an existing gemspec" do
     expect(error).to match(/There are no gemspecs at #{tmp.join('foo')}/)
   end
 
+  it "should raise if there is no version on the gemspec" do
+    build_lib("noversion", "noversion", :path => tmp.join("noversion"))
+
+    error = install_gemfile(<<-G, :expect_err => true)
+      source "file://#{gem_repo2}"
+      gemspec :path => '#{tmp.join("noversion")}'
+    G
+    expect(error).to match(/version error message/)
+  end
+
   it "should raise if there are too many gemspecs available" do
     build_lib("foo", :path => tmp.join("foo")) do |s|
       s.write("foo2.gemspec", "")
